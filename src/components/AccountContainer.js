@@ -36,11 +36,28 @@ function AccountContainer() {
 
   const filteredTransactionList = transactions.filter((transaction) => transaction.description.toUpperCase().includes(filteredTransaction.toUpperCase()))
 
+  function deleteTransaction(id) {
+    fetch(`${transactionAPI}/${id}`, {
+      method: "DELETE"
+    })
+    const afterDeleteTransactionList = transactions.filter(transaction => transaction.id !== id)
+    setTransactions(afterDeleteTransactionList)
+  }
+
+  // function sortTransactions(a,b) {
+  //   return b.description.localeCompare(a.description);
+  // }
+
+  // const sortedTransactions = [...filteredTransactionList].sort(sortTransactions)
+
   return (
     <div>
       <Search filteredTransaction={filteredTransaction} setFilteredTransaction={setFilteredTransaction} />
       <AddTransactionForm renderNewTransaction={renderNewTransaction} />
-      <TransactionsList transactions={filteredTransactionList} />
+      <TransactionsList 
+      transactions={filteredTransactionList} 
+      deleteTransaction={deleteTransaction}
+      />
     </div>
   );
 }
